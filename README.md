@@ -1,19 +1,40 @@
 <!--
-Projeto 3 de Linguagens de Programação II 2021/2022 (c) by Nuno Fachada
+Projeto de Recurso de Linguagens de Programação II 2021/2022 (c) by Nuno Fachada
 
-Projeto 3 de Linguagens de Programação II 2021/2022 is licensed under a
+Projeto de Recurso de Linguagens de Programação II 2021/2022 is licensed under a
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 -->
 
-# Projeto 3 (alternativo) de Linguagens de Programação II 2021/2022
+# Projeto de Recurso de Linguagens de Programação II 2021/2022
 
 ## Descrição do problema
 
 Os grupos devem implementar o jogo [Madelinette](#madelinette) para dois
-jogadores na forma de um projeto de consola em C# (.NET 5.0).
+jogadores na forma de um projeto de consola em C# (.NET 5.0) e de um projeto
+Unity (2021.1).
+
+A lógica, regras e dados do jogo (o chamado **modelo**), devem ser completamente
+independentes tanto da interface de consola (`WriteLines`, `ReadLines`), como
+do Unity. Este modelo deve ser obrigatoriamente o mesmo em ambas as
+implementações, devendo ser partilhado de uma forma que não implique
+copiar os ficheiros de um lado para o outro. Existe forma de fazer isto ao
+nível do Git usando [sub-módulos][submodules], como foi feito
+[neste caso][ia-simplexity], por exemplo.
+
+O [Model-View-Controller (MVC)][MVC] *design pattern* é necessário para a
+realização deste projeto. Por exemplo, [neste projeto Unity][ia-simplexity], o
+modelo é completamente independente do Unity, sendo trivial implementar uma
+versão em consola.
+
+O exemplo [MVCExample] e o [respetivo vídeo de desenvolvimento][MVCVideo] são
+essenciais para a compreensão do que é necessário fazer neste projeto. No
+entanto tenham atenção que a implementação em consola desse exemplo é muito
+simples e não faz uso dos *design patterns*
+[necessários para a implementação em consola](#detalhes-adicionais-do-projeto-em-consola)
+deste projeto.
 
 O objetivo principal deste projeto é a implementação de uma aplicação com uma
 arquitetura bem pensada e bem desenhada. Obviamente que o jogo deve funcionar
@@ -46,39 +67,56 @@ do projeto é zero.
 #### Arquitetura de classes e _patterns_
 
 O projeto deve obedecer aos princípios [SOLID], bem como aos princípios gerais
-de design de classes. Em particular, o projeto tem de fazer uso e implementar
-corretamente os seguintes _design patterns_:
-
-* MVC
-* Double buffer
-* Game loop
-* Update method
-* Component pattern
-
-Além disso, a aplicação deve compilar sem _warnings_. Podem compilar o projeto
-sem o executar com `dotnet build nome-do-projeto` na pasta da solução (ou apenas
-`dotnet build` na pasta do projeto).
+de design de classes. Devem usar o [MVC] *pattern* para organizar o código, e o
+código do **modelo** (o **M** em MVC) deve ser o mesmo entre as duas
+implementações (consola e Unity).
 
 #### Funcionamento da aplicação
 
 A nível de jogabilidade/interação:
 
+* O jogo tem de funcionar corretamente.
 * A aplicação deve ter um menu inicial com as opções "Play", "Rules", "Authors"
-  e "Quit". Tal como o jogo em si, o menu deve ser uma cena (_scene_) a correr
-  no _game loop_, tal como seria se a aplicação fosse implementada em Unity.
+  e "Quit".
 * A UI do jogo deve ser intuitiva, colocando em cima das peças jogáveis um
-  número que, se pressionado, move a respetiva peça para a posição livre.
-  Durante o jogo, devem existir opções para voltar ao menu principal e para
+  número que, se pressionado, move a respetiva peça para a posição livre. No
+  Unity podem também usar o clique do rato para mover a peça.
+* Durante o jogo, devem existir opções para voltar ao menu principal e para
   sair imediatamente da aplicação, e as mesmas devem estar claramente indicadas
   no UI.
+
+#### Detalhes adicionais do projeto em consola
+
+O projeto de consola tem de fazer uso e implementar corretamente os seguintes
+_design patterns_, além do MVC:
+
+* Double buffer
+* Game loop
+* Update method
+* Component pattern
+
+Além disso:
+
+* Tal como o jogo em si, o menu deve ser uma cena (_scene_) a correr no
+  _game loop_, tal como seria se a aplicação fosse implementada em Unity.
 * Não podem usar `Console.ReadLine()` ou `Console.Read()`, nem seria possível
   fazê-lo com o _game loop pattern_. Podem usar apenas `Console.ReadKey(true)`
   numa _thread_ separada, tal como discutido nas aulas.
 * Tanto o menu como o jogo devem ter algum tipo de animação de modo a que se
   perceba que estamos num _game loop_ e não numa aplicação passiva de consola
   (daquelas que funcionam com `Console.ReadLine()`).
+* O projeto deve ser multi-plataforma, ou seja, deve funcionar em Linux e macOS,
+  pelo que devem ser evitados métodos e classes que apenas funcionam em Windows.
 
-### Requisito técnico para nota superior a 2.5 (num máximo de 3.5)
+A aplicação de consola deve compilar sem _warnings_. Podem compilar o projeto
+sem o executar com `dotnet build nome-do-projeto` na pasta da solução (ou apenas
+`dotnet build` na pasta do projeto).
+
+#### Detalhes adicionais do projeto de Unity
+
+A aplicação Unity deve compilar e executar sem erros e _warnings_.
+
+### Requisito técnico para nota superior a 8 (num máximo de 10)
 
 O tabuleiro do jogo não é um _array_ bidimensional perfeito, pois não existe
 ligação horizontal nas duas peças de cima. Desta forma, implementar o tabuleiro
@@ -98,7 +136,32 @@ o vosso grafo não funcione também diretamente com coordenadas, caso implemente
 indexadores para o efeito.
 
 Caso não implementem uma estrutura de dados deste tipo, a nota máxima do projeto
-fica limitada a 2.5 valores.
+fica limitada a 8 valores.
+
+### Sugestões para uso de sub-módulos em Git
+
+Para fazerem _clone_ de um projeto com sub-módulos devem usar o seguinte
+comando, exemplificado para o projeto exemplo [MVCExample], cujo vídeo de
+desenvolvimento podem visualizar [neste link][MVCVideo]:
+
+```
+git clone --recurse-submodules https://github.com/VideojogosLusofona/MVCExample.git
+```
+
+Caso se tenham esquecido de usar a opção `--recurse-submodules`, podem executar
+o seguinte comando na raiz do projeto que obtém os conteúdos dos sub-módulos:
+
+```
+git submodule update --init --recursive
+```
+
+Os sub-módulos estão inicialmente no estado `HEAD detached`, isto é, não estão
+em nenhum ramo. Para os sub-módulos ficarem no ramo pretendido, por exemplo o
+ramo `common`, basta fazer `cd` até à pasta de cada sub-módulo e fazer
+`git checkout common` (e depois `git pull` para obter as últimas alterações
+ou `git add/commit/push` para criarem _commits_ específicos ao sub-módulo).
+
+<!-- git submodule foreach --recursive git checkout common-->
 
 ## Objetivos e critério de avaliação
 
@@ -109,7 +172,7 @@ Este projeto tem os seguintes objetivos:
 * **O2** - Projeto deve ser implementado segundo o que está definido na secção
   [Arquitetura de classes e _patterns_](#arquitetura-de-classes-e-patterns), e
   se possível o
-  [requisito técnico para nota superior a 2.5](#requisito-técnico-para-nota-superior-a-25-num-máximo-de-35).
+  [requisito técnico para nota superior a 8](#requisito-técnico-para-nota-superior-a-8-num-máximo-de-10).
   Além disso, o projeto deve ter em conta o seguinte:
   * Código devidamente comentado e indentado.
   * Inexistência de código "morto", que não faz nada, como por exemplo
@@ -147,12 +210,12 @@ Este projeto tem os seguintes objetivos:
     Atenção aos erros ortográficos e à correta formatação [Markdown], pois
     ambos serão tidos em conta na nota final.
 
-O projeto tem um peso de 3.5 valores na nota final da disciplina e será avaliado
+O projeto tem um peso de 10 valores na nota final da disciplina e será avaliado
 de forma qualitativa. Isto significa que todos os objetivos têm de ser
 parcialmente ou totalmente cumpridos. A cada objetivo, O1 a O5, será atribuída
 uma nota entre 0 e 1. A nota do projeto será dada pela seguinte fórmula:
 
-*N = 3.5 x O1 x O2 x O3 x O4 x O5 x D*
+*N = 10 x O1 x O2 x O3 x O4 x O5 x D*
 
 Em que *D* corresponde à nota da discussão e percentagem equitativa de
 realização do projeto, também entre 0 e 1. Isto significa que se os alunos
@@ -161,24 +224,24 @@ não comparecerem na discussão, a nota final será zero.
 
 ## Entrega
 
-O projeto é entregue de forma automática através do GitHub. Mais concretamente,
-o repositório do projeto será automaticamente clonado às **23h55 de 19 de
-janeiro de 2022**. Certifiquem-se de que a aplicação está funcional e que todos
+O projeto deve ser submetido no Moodle até às **23h00 de 6 de fevereiro de
+2022**. Certifiquem-se de que a aplicação está funcional e que todos
 os requisitos foram cumpridos, caso contrário o projeto não será avaliado.
 
 O repositório deve ter:
 
 * Projeto de consola .NET 5.0 funcional.
-* Ficheiros `.gitignore` e `.gitattributes` adequados para o projeto em questão.
+* Projeto de Unity 2021.1.x funcional.
+* Ficheiros `.gitignore` e `.gitattributes` adequados para o projeto ou projetos
+  em questão.
 * Ficheiro `README.md` contendo o relatório do projeto em formato [Markdown].
 * Ficheiros de imagens, contendo o diagrama UML de classes e outras figuras
   que considerem úteis. Estes ficheiros devem ser incluídos no repositório em
   modo Git LFS.
 
 Em nenhuma circunstância o repositório pode ter _builds_ ou outros ficheiros
-temporários do projeto e do Visual Studio (como por exemplo as pastas `bin`,
-`obj`, `.vs` ou `.vscode`), que são automaticamente ignorados se usarem um
-`.gitignore` apropriado.
+temporários dos projetos, do Visual Studio e do Unity, que são automaticamente
+ignorados se usarem um `.gitignore` apropriado.
 
 ## Honestidade académica
 
@@ -244,13 +307,12 @@ Este enunciado é disponibilizado através da licença [CC BY-NC-SA 4.0].
 [KISS]:https://en.wikipedia.org/wiki/KISS_principle
 [XML]:https://docs.microsoft.com/dotnet/csharp/codedoc
 [SOLID]:https://en.wikipedia.org/wiki/SOLID
-[Snake]:https://en.wikipedia.org/wiki/Snake_(video_game_genre)
-[Frogger]:https://en.wikipedia.org/wiki/Frogger
-[Moon buggy]:https://www.seehuhn.de/pages/moon-buggy
-[Tron]:https://en.wikipedia.org/wiki/Tron_(video_game)
-[Pac-Man]:https://en.wikipedia.org/wiki/Pac-Man
-[Tetris]:https://en.wikipedia.org/wiki/Tetris
 [Game Loop]:http://gameprogrammingpatterns.com/game-loop.html
 [Update Method]:http://gameprogrammingpatterns.com/update-method.html
 [Component Pattern]:https://gameprogrammingpatterns.com/component.html
 [Roslynator]:https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator
+[MVC]:https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
+[ia-simplexity]:https://github.com/VideojogosLusofona/color-shape-links-ai-competition
+[submodules]:https://git-scm.com/book/en/v2/Git-Tools-Submodules
+[MVCExample]:https://github.com/VideojogosLusofona/MVCExample.git
+[MVCVideo]:https://www.youtube.com/watch?v=_z_iRUjmvzE

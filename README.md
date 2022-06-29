@@ -1,19 +1,19 @@
 <!--
-Projeto de Recurso de Linguagens de Programação II 2021/2022 (c) by Nuno Fachada
+Projeto de Época Especial de Linguagens de Programação II 2021/2022 (c) by Nuno Fachada
 
-Projeto de Recurso de Linguagens de Programação II 2021/2022 is licensed under a
+Projeto de Época Especial de Linguagens de Programação II 2021/2022 is licensed under a
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 -->
 
-# Projeto de Recurso de Linguagens de Programação II 2021/2022
+# Projeto de Época Especial de Linguagens de Programação II 2021/2022
 
 ## Descrição do problema
 
 Os grupos devem implementar o jogo [Madelinette](#madelinette) para dois
-jogadores na forma de um projeto de consola em C# (.NET 5.0) e de um projeto
+jogadores na forma de um projeto de consola em C# (.NET 3.1) e de um projeto
 Unity (2021.1).
 
 A lógica, regras e dados do jogo (o chamado **modelo**), devem ser completamente
@@ -224,13 +224,13 @@ não comparecerem na discussão, a nota final será zero.
 
 ## Entrega
 
-O projeto deve ser submetido no Moodle até às **23h00 de 6 de fevereiro de
+O projeto deve ser submetido no Moodle até às **23h00 de 15 de setembro de
 2022**. Certifiquem-se de que a aplicação está funcional e que todos
 os requisitos foram cumpridos, caso contrário o projeto não será avaliado.
 
 O repositório deve ter:
 
-* Projeto de consola .NET 5.0 funcional.
+* Projeto de consola .NET 3.1 funcional.
 * Projeto de Unity 2021.1.x funcional.
 * Ficheiros `.gitignore` e `.gitattributes` adequados para o projeto ou projetos
   em questão.
